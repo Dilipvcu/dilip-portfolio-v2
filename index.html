@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dilip Ganesh</title>
+<meta name="description" content="AI/ML Engineer specializing in generative AI, agentic workflows, and full-stack development.">
+<style>
+  :root{
+    --ink:#14162b;
+    --ink-soft:#3a3d5c;
+    --muted:#6b6e93;
+    --bg:#f6f5f9;
+    --bg-alt:#ffffff;
+    --card:#ffffff;
+    --card-border:#e4e2f0;
+    --accent:#4f46e5;
+    --accent-2:#7c3aed;
+    --accent-3:#c026d3;
+    --accent-soft:#eeecfc;
+    --mono-bg:#efeefb;
+    --line:#dedcf0;
+    --shadow: 0 1px 2px rgba(20,22,43,.04), 0 12px 32px rgba(20,22,43,.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#eef0ff;
+      --ink-soft:#c7cbf5;
+      --muted:#9498c9;
+      --bg:#0c0d1a;
+      --bg-alt:#12142880;
+      --card:#14162bcc;
+      --card-border:#2a2c4d;
+      --accent:#8b85ff;
+      --accent-2:#b18bff;
+      --accent-3:#ec7ff0;
+      --accent-soft:#201f3d;
+      --mono-bg:#1a1c33;
+      --line:#25274a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 48px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#eef0ff;
+    --ink-soft:#c7cbf5;
+    --muted:#9498c9;
+    --bg:#0c0d1a;
+    --bg-alt:#12142880;
+    --card:#14162bcc;
+    --card-border:#2a2c4d;
+    --accent:#8b85ff;
+    --accent-2:#b18bff;
+    --accent-3:#ec7ff0;
+    --accent-soft:#201f3d;
+    --mono-bg:#1a1c33;
+    --line:#25274a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 48px rgba(0,0,0,.45);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+
+  .bg-field{
+    position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none;
+  }
+  .bg-field::before, .bg-field::after{
+    content:""; position:absolute; width:60vmax; height:60vmax; border-radius:50%;
+    filter:blur(90px); opacity:.35;
+  }
+  .bg-field::before{
+    background:radial-gradient(circle, var(--accent), transparent 70%);
+    top:-20vmax; left:-15vmax;
+  }
+  .bg-field::after{
+    background:radial-gradient(circle, var(--accent-3), transparent 70%);
+    bottom:-25vmax; right:-15vmax;
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding-inline:24px;}
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{
+    font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.15rem;
+    letter-spacing:.01em; text-decoration:none; color:var(--ink);
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand-mark{
+    width:30px; height:30px; border-radius:9px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2) 55%,var(--accent-3));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:.95rem;
+    flex:none;
+  }
+  .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0; font-size:.92rem;}
+  .nav-links a{text-decoration:none; color:var(--muted); font-weight:500; transition:color .2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-right{display:flex; align-items:center; gap:14px;}
+  .theme-btn{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--line);
+    background:var(--card); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1rem; color:var(--ink); transition:transform .3s, border-color .2s;
+  }
+  .theme-btn:hover{transform:rotate(20deg); border-color:var(--accent);}
+  .nav-toggle{display:none; background:none; border:none; font-size:1.4rem; color:var(--ink); cursor:pointer;}
+
+  @media (max-width:760px){
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0;
+      background:var(--bg); border-bottom:1px solid var(--line); padding:8px 24px 18px;
+    }
+    .nav-links a{display:block; padding:10px 0; border-bottom:1px solid var(--line);}
+    .nav-links a:last-child{border-bottom:none;}
+    .nav-toggle{display:block;}
+  }
+
+  header.hero{padding:76px 0 64px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--accent);}
+  h1.name{
+    font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(2.4rem,6vw,4.1rem);
+    line-height:1.04; margin:0 0 18px; letter-spacing:-.01em; text-wrap:balance;
+  }
+  h1.name em{
+    font-style:normal;
+    background:linear-gradient(100deg,var(--accent),var(--accent-2) 45%,var(--accent-3));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .tagline{
+    font-size:clamp(1.05rem,2.2vw,1.3rem); color:var(--ink-soft); max-width:680px;
+    margin:0 0 30px; text-wrap:balance;
+  }
+  .hero-meta{display:flex; flex-wrap:wrap; gap:10px 22px; margin-bottom:34px;}
+  .hero-meta span{
+    font-size:.9rem; color:var(--muted); display:flex; align-items:center; gap:7px;
+  }
+  .hero-cta{display:flex; flex-wrap:wrap; gap:14px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px;
+    font-weight:600; font-size:.94rem; text-decoration:none; transition:transform .2s, box-shadow .2s;
+    border:1px solid transparent;
+  }
+  .btn-primary{
+    background:linear-gradient(120deg,var(--accent),var(--accent-2));
+    color:#fff; box-shadow:0 10px 26px -8px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-2px);}
+
+  section{padding:64px 0;}
+  .section-head{margin-bottom:38px; max-width:640px;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace; font-size:.76rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 10px;
+  }
+  h2.h-title{
+    font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(1.6rem,3.4vw,2.3rem);
+    margin:0 0 12px; letter-spacing:-.01em;
+  }
+  .section-sub{color:var(--muted); margin:0; font-size:1rem;}
+  .card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:18px;
+    box-shadow:var(--shadow);
+  }
+
+  #about .card{padding:32px; display:grid; grid-template-columns:1.4fr 1fr; gap:36px;}
+  #about p{color:var(--ink-soft); margin:0 0 14px;}
+  #about p:last-child{margin-bottom:0;}
+  .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-content:start;}
+  .stat{
+    background:var(--accent-soft); border-radius:14px; padding:16px 18px;
+  }
+  .stat b{
+    display:block; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--accent); font-weight:600;
+  }
+  .stat span{font-size:.82rem; color:var(--muted);}
+  @media (max-width:720px){#about .card{grid-template-columns:1fr;}}
+
+  .timeline{position:relative; padding-left:28px; border-left:2px solid var(--line);}
+  .tl-item{position:relative; padding-bottom:44px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-34px; top:4px; width:12px; height:12px; border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent-3)); border:3px solid var(--bg);
+    box-shadow:0 0 0 2px var(--accent);
+  }
+  .tl-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; margin-bottom:6px;}
+  .tl-role{font-weight:700; font-size:1.08rem;}
+  .tl-org{color:var(--accent); font-weight:600;}
+  .tl-time{
+    margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--muted);
+    white-space:nowrap;
+  }
+  .tl-loc{font-size:.85rem; color:var(--muted); margin:0 0 12px;}
+  .tl-item ul{margin:0; padding-left:20px; color:var(--ink-soft);}
+  .tl-item li{margin-bottom:8px; font-size:.96rem;}
+  .tl-item li:last-child{margin-bottom:0;}
+
+  .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  @media (max-width:760px){.proj-grid{grid-template-columns:1fr;}}
+  .proj{padding:26px; display:flex; flex-direction:column; gap:12px;}
+  .proj h3{margin:0; font-size:1.1rem; font-family:'Fraunces',serif; font-weight:600;}
+  .proj p{margin:0; color:var(--ink-soft); font-size:.92rem;}
+  .stack{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; padding:4px 9px; border-radius:6px;
+    background:var(--mono-bg); color:var(--accent-2); border:1px solid var(--card-border);
+  }
+
+  .skill-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  @media (max-width:760px){.skill-grid{grid-template-columns:1fr;}}
+  .skill-card{padding:22px 24px;}
+  .skill-card h3{
+    margin:0 0 14px; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:600;
+  }
+  .skill-tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-size:.84rem; padding:6px 12px; border-radius:8px; background:var(--accent-soft);
+    color:var(--ink-soft); border:1px solid var(--card-border);
+  }
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:760px){.two-col{grid-template-columns:1fr;}}
+  .edu-card{padding:24px;}
+  .edu-card h3{margin:0 0 4px; font-size:1.02rem; font-family:'Fraunces',serif; font-weight:600;}
+  .edu-card .school{color:var(--accent); font-weight:600; font-size:.92rem; margin-bottom:2px;}
+  .edu-card .meta{color:var(--muted); font-size:.82rem; margin-bottom:10px;}
+  .edu-card p{margin:0; color:var(--ink-soft); font-size:.88rem;}
+
+  .list-card{padding:24px;}
+  .list-card + .list-card{margin-top:18px;}
+  .list-card h3{margin:0 0 14px; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); font-family:'JetBrains Mono',monospace;}
+  .cert-item{margin-bottom:14px;}
+  .cert-item:last-child{margin-bottom:0;}
+  .cert-item b{display:block; font-size:.94rem;}
+  .cert-item span{font-size:.84rem; color:var(--muted);}
+  .lead-item{margin-bottom:12px; font-size:.9rem; color:var(--ink-soft);}
+  .lead-item b{color:var(--ink);}
+  .lead-item:last-child{margin-bottom:0;}
+
+  #contact{padding-top:20px;}
+  .contact-card{
+    padding:48px 40px; text-align:center; position:relative; overflow:hidden;
+  }
+  .contact-card::before{
+    content:""; position:absolute; inset:0; z-index:-1; opacity:.08;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2),var(--accent-3));
+  }
+  .contact-card h2{margin:0 0 12px;}
+  .contact-card p{color:var(--ink-soft); max-width:480px; margin:0 auto 26px;}
+  .contact-links{display:flex; flex-wrap:wrap; justify-content:center; gap:14px;}
+  footer{
+    text-align:center; padding:34px 24px 48px; color:var(--muted); font-size:.85rem;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-field"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top"><span class="brand-mark">DG</span>Dilip Ganesh</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle color theme" type="button">🌓</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" type="button">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<header class="hero wrap">
+  <p class="eyebrow">AI/ML Engineer · Generative AI &amp; Agentic Workflows</p>
+  <h1 class="name">Dilip Bukkambudhi<br><em>Ganesh</em></h1>
+  <p class="tagline">Building multi-agent GenAI pipelines, fraud-detection models, and full-stack products &mdash; where models meet real-world impact.</p>
+  <div class="hero-meta">
+    <span>📍 Richmond, VA</span>
+    <span>🎓 M.S. Computer Science, VCU &middot; May 2026</span>
+    <span>✉️ dilipbganesh0205@gmail.com</span>
+  </div>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#contact">Get in touch</a>
+    <a class="btn btn-ghost" href="#projects">View projects</a>
+    <a class="btn btn-ghost" href="mailto:dilipbganesh0205@gmail.com">Email resume request</a>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">About</p>
+      <h2 class="h-title">From production ML systems to agentic automation</h2>
+    </div>
+    <div class="card">
+      <div>
+        <p>AI/ML Engineer with an M.S. in Computer Science from Virginia Commonwealth University (May 2026) and experience spanning GenAI engineering, machine learning, and full-stack development.</p>
+        <p>Built multi-agent GenAI automation pipelines for financial reconciliation at Sprinto, cutting an 8&ndash;10-week manual process to hours, and developed a transformer-based fraud detection system at Entropik that reduced false positives by 23% and cut underwriting review time by ~40% via LLM-powered RAG pipelines.</p>
+        <p>As a Full Stack Engineer, built RESTful APIs in Java/Spring Boot and MySQL, raised backend test coverage to ~75% with JUnit and Cucumber, and delivered cross-browser React frontends. Skilled at applying prompt engineering, RAG, and Python-based ML tooling end to end &mdash; now seeking an AI/ML Engineer, Applied AI, or Full-Stack role.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><b>8&ndash;10 wks &rarr; hrs</b><span>Reconciliation onboarding automated at Sprinto</span></div>
+        <div class="stat"><b>23%</b><span>Fewer false positives, transformer fraud model</span></div>
+        <div class="stat"><b>~40%</b><span>Faster underwriting review via RAG pipeline</span></div>
+        <div class="stat"><b>~75%</b><span>Backend test coverage raised with JUnit/Cucumber</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Experience</p>
+      <h2 class="h-title">Professional experience</h2>
+      <p class="section-sub">Three roles across GenAI engineering, applied ML, and full-stack development.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-head">
+          <span class="tl-role">Generative AI Engineer</span>
+          <span class="tl-org">&middot; Sprinto</span>
+          <span class="tl-time">Jul 2024 &ndash; Mar 2026</span>
+        </div>
+        <p class="tl-loc">Remote</p>
+        <ul>
+          <li>Architected a multi-agent GenAI automation pipeline for financial reconciliation onboarding, reducing an 8&ndash;10-week manual process to hours through deterministic routing, validation, and orchestration agents on containerized on-prem infrastructure.</li>
+          <li>Engineered fault-tolerant, multi-threaded batch processing for high-volume reconciliation validation, cutting processing time across thousands of records while maintaining strict output ordering and per-record exception isolation.</li>
+          <li>Implemented production-grade resilience patterns &mdash; retry logic with exponential backoff/jitter and circuit breakers &mdash; reducing transient failures and eliminating false-positive alerts.</li>
+          <li>Built a secure SSH/SFTP connectivity module in Python (Paramiko) for automated file discovery and data extraction from on-prem Unix servers via containerized OpenShift.</li>
+          <li>Implemented structured JSON logging with distributed trace correlation across the multi-agent pipeline, delivering full audit-trail visibility for every automated reconciliation decision.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-head">
+          <span class="tl-role">AI/ML Engineer</span>
+          <span class="tl-org">&middot; Entropik</span>
+          <span class="tl-time">Nov 2022 &ndash; Jun 2024</span>
+        </div>
+        <p class="tl-loc">Bengaluru, IN</p>
+        <ul>
+          <li>Owned end-to-end development of a transformer-based fraud detection system in PyTorch, framing detection as sequence classification over sliding 30-transaction windows with self-attention &mdash; reducing false positives by 23% and improving PR-AUC over the baseline XGBoost model in a 6-week production A/B test.</li>
+          <li>Built an end-to-end MLOps and feature engineering pipeline using MLflow, Airflow, and PySpark on Delta Lake, deployed via Azure DevOps/Kubernetes to a Redis-backed feature store serving 80ms inference on AWS SageMaker.</li>
+          <li>Integrated SHAP explainability for per-transaction feature attribution, addressed a 0.3% fraud class imbalance using focal loss and Hugging Face synthetic data generation, and built a Kafka + Azure Stream Analytics pipeline for sub-second fraud alert routing.</li>
+          <li>Developed LLM-powered underwriting automation using GPT-4, LangChain, and LlamaIndex with RAG pipelines for document retrieval and structured JSON output, cutting manual underwriting review time by ~40%.</li>
+          <li>Built executive-facing Power BI dashboards tracking fraud KPIs, adopted as the primary decision tool by fraud operations and fintech leadership.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-head">
+          <span class="tl-role">Full Stack Engineer</span>
+          <span class="tl-org">&middot; Recro</span>
+          <span class="tl-time">Feb 2020 &ndash; Nov 2022</span>
+        </div>
+        <p class="tl-loc">India</p>
+        <ul>
+          <li>Designed and developed RESTful backend APIs in Java and Spring Boot, reducing average response latency for high-traffic endpoints across concurrent multi-user pipelines.</li>
+          <li>Architected and optimized MySQL database schemas and queries, improving query performance and data integrity across multiple services.</li>
+          <li>Authored 30+ JUnit unit tests integrated into CI/CD, increasing backend test coverage from ~40% to ~75%.</li>
+          <li>Built Cucumber/Gherkin end-to-end test scenarios, cutting post-release defects by ~30% and reducing regression testing time.</li>
+          <li>Delivered responsive, cross-browser frontend improvements ensuring consistent UX across devices.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Projects</p>
+      <h2 class="h-title">Technical projects</h2>
+      <p class="section-sub">Independent and coursework projects spanning agentic AI, full-stack systems, and applied ML.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="card proj">
+        <h3>AI-Powered Debt Manager</h3>
+        <p>Cut simulated interest costs by up to 22% with an LLM-powered financial analysis tool using LangGraph agent orchestration and the OpenAI API to generate personalized debt payoff strategies. Modular agentic pipeline &mdash; ingestion, repayment calculation, strategy generation, visualization &mdash; following microservices principles for testability.</p>
+        <div class="stack">
+          <span class="chip">Python</span><span class="chip">LangGraph</span><span class="chip">OpenAI API</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span>
+        </div>
+      </div>
+      <div class="card proj">
+        <h3>ML-Driven Expense Intelligence</h3>
+        <p>Extended a full-stack expense tracker with a Python analytics layer classifying spending patterns and flagging anomalous transactions. Improved throughput by ~35% after benchmarking under 50+ simulated concurrent users and resolving 3 bottlenecks; secured all routes with JWT.</p>
+        <div class="stack">
+          <span class="chip">Node.js</span><span class="chip">React</span><span class="chip">MongoDB</span><span class="chip">JWT</span><span class="chip">Python</span>
+        </div>
+      </div>
+      <div class="card proj">
+        <h3>Real-Time Event Pipeline</h3>
+        <p>Achieved zero message loss across all test runs by architecting a fault-tolerant Kafka producer/consumer pipeline for real-time event streaming, applicable to ML feature pipelines and model monitoring. Configured topic partitioning and consumer group offsets for ordered delivery.</p>
+        <div class="stack">
+          <span class="chip">Apache Kafka</span><span class="chip">Node.js</span><span class="chip">MongoDB</span>
+        </div>
+      </div>
+      <div class="card proj">
+        <h3>Image Analysis &amp; Computer Vision</h3>
+        <p>Applied image preprocessing, feature extraction, and classification techniques to build foundational computer vision competency. Implemented and evaluated SVM, k-NN, and decision-tree models, tuning hyperparameters to improve precision/recall tradeoffs. (Graduate coursework)</p>
+        <div class="stack">
+          <span class="chip">Python</span><span class="chip">Scikit-learn</span><span class="chip">NumPy</span><span class="chip">OpenCV</span>
+        </div>
+      </div>
+      <div class="card proj">
+        <h3>Blockchain &amp; Predictive Analytics Research</h3>
+        <p>Applied time-series analysis and regression models to cryptocurrency transaction data to identify market patterns, demonstrating adaptability of ML methods across structured financial and decentralized-ledger data. (Graduate coursework)</p>
+        <div class="stack">
+          <span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">Scikit-learn</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Skills</p>
+      <h2 class="h-title">Core technical skills</h2>
+    </div>
+    <div class="skill-grid">
+      <div class="card skill-card">
+        <h3>AI / Machine Learning</h3>
+        <div class="skill-tags">
+          <span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Matplotlib</span><span class="tag">OpenAI API</span><span class="tag">LangGraph</span><span class="tag">LangChain</span><span class="tag">Prompt Engineering</span><span class="tag">RAG</span><span class="tag">Agentic Workflows</span><span class="tag">Model Evaluation</span><span class="tag">SVM / k-NN / Decision Trees</span><span class="tag">OpenCV</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Generative AI Tooling</h3>
+        <div class="skill-tags">
+          <span class="tag">Claude Code</span><span class="tag">Cursor</span><span class="tag">ChatGPT</span><span class="tag">Anthropic API</span><span class="tag">Agentic AI Workflows</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Frontend Development</h3>
+        <div class="skill-tags">
+          <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Next.js</span><span class="tag">Redux</span><span class="tag">Tailwind CSS</span><span class="tag">Angular</span><span class="tag">JavaScript (ES6+)</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">Jest / RTL</span><span class="tag">GraphQL</span><span class="tag">Webpack/Vite</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Backend &amp; APIs</h3>
+        <div class="skill-tags">
+          <span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">Spring Boot</span><span class="tag">REST APIs</span><span class="tag">GraphQL</span><span class="tag">JWT/OAuth</span><span class="tag">Apache Kafka</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Languages &amp; Databases</h3>
+        <div class="skill-tags">
+          <span class="tag">Python</span><span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">C</span><span class="tag">SQL</span><span class="tag">MongoDB</span><span class="tag">MySQL</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <h3>Cloud, DevOps &amp; Testing</h3>
+        <div class="skill-tags">
+          <span class="tag">AWS (EC2, S3)</span><span class="tag">Docker</span><span class="tag">Git/GitHub</span><span class="tag">Linux</span><span class="tag">Postman</span><span class="tag">JUnit</span><span class="tag">Pytest</span><span class="tag">Cucumber/Gherkin</span><span class="tag">Selenium</span><span class="tag">Agile/Scrum</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Education</p>
+      <h2 class="h-title">Education, certifications &amp; leadership</h2>
+    </div>
+    <div class="two-col" style="margin-bottom:22px;">
+      <div class="card edu-card">
+        <h3>M.S. in Computer Science</h3>
+        <p class="school">Virginia Commonwealth University, Richmond, VA</p>
+        <p class="meta">GPA 3.5+ &middot; May 2026</p>
+        <p>Relevant coursework: Machine Learning, Data Science, Software Engineering for AI-Enabled Systems, Human-AI Interaction, Image Analysis, Memory &amp; Malware Forensics, Cryptocurrency &amp; Blockchain.</p>
+      </div>
+      <div class="card edu-card">
+        <h3>B.S. in Computer Science</h3>
+        <p class="school">CMR Institute of Technology</p>
+        <p class="meta">Jun 2024</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card list-card">
+        <h3>Certifications</h3>
+        <div class="cert-item"><b>Google AI Essentials</b><span>Google, 2026 &mdash; foundational course covering core machine learning concepts and responsible AI.</span></div>
+        <div class="cert-item"><b>Python Certificate</b><span>Prepinsta, 2023 &mdash; proctored assessment covering data structures, OOP, and algorithmic problem-solving.</span></div>
+      </div>
+      <div class="card list-card">
+        <h3>Leadership &amp; Extracurricular</h3>
+        <div class="lead-item"><b>Captain, University Cricket Team</b> (2023&ndash;2024) &mdash; Led a 15-member team, directing match strategy, player coordination, and morale across inter-university tournaments.</div>
+        <div class="lead-item"><b>Member, Student Science Club</b> (2022&ndash;2024) &mdash; Participated in science exhibitions and peer-led discussions on AI, robotics, and renewable energy.</div>
+        <div class="lead-item"><b>Volunteer Organizer, Cultural Fest</b> (2023)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="card contact-card">
+      <p class="kicker" style="justify-content:center; display:flex;">Contact</p>
+      <h2 class="h-title">Let's build something together</h2>
+      <p>Open to AI/ML Engineer, Applied AI, and Full-Stack roles where models meet real-world impact.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:dilipbganesh0205@gmail.com">✉️ dilipbganesh0205@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+18045518521">📞 (804) 551-8521</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Dilip Bukkambudhi Ganesh &middot; Richmond, VA &middot; Built with care.
+</footer>
+
+<script>
+(function(){
+  try{
+    var btn = document.getElementById('themeBtn');
+    var root = document.documentElement;
+    var stored = null;
+    try{ stored = localStorage.getItem('dg-theme'); }catch(e){}
+    if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+    btn.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme');
+      var isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      var next = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('dg-theme', next); }catch(e){}
+    });
+  }catch(e){}
+
+  try{
+    var navToggle = document.getElementById('navToggle');
+    var navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', function(){
+      navLinks.style.display = (navLinks.style.display === 'flex') ? 'none' : 'flex';
+    });
+    navLinks.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        if(window.innerWidth <= 760){ navLinks.style.display = 'none'; }
+      });
+    });
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
